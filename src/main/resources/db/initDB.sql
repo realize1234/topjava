@@ -25,7 +25,7 @@ CREATE TABLE meals(
 );
 CREATE INDEX meal_user ON meals (user_id, id);
 
-CREATE UNIQUE INDEX user_meal_date_time ON meals (id, date_time, user_id);
+CREATE UNIQUE INDEX user_meal_date_time ON meals (date_time, user_id);
 
 CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
 
