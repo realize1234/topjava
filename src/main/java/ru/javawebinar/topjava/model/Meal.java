@@ -10,10 +10,25 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
+import static ru.javawebinar.topjava.model.Meal.*;
+
 @Entity
+
+@NamedQueries({
+        @NamedQuery(name = MEAL_GET, query = "SELECT  m FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
+        @NamedQuery(name = MEAL_GET_ALL, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC "),
+        @NamedQuery(name = MEAL_DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
+        @NamedQuery(name = MEAL_GET_ALL_BETWEEN, query = "SELECT m FROM Meal m WHERE m.user.id=:userId" +
+                " AND m.dateTime BETWEEN :startDateTime AND :endDateTime ORDER BY m.dateTime")
+})
 @Table(name = "meals", uniqueConstraints =
         {@UniqueConstraint(columnNames ={"date_time", "user_id"}, name = "meals_unique_user_datetime_idx")})
 public class Meal extends BaseEntity {
+    public static final String MEAL_GET = "mealGet";
+    public static final String MEAL_GET_ALL = "mealGetAll";
+    public static final String MEAL_DELETE = "mealDelete";
+    public static final String MEAL_GET_ALL_BETWEEN = "mealGetAllBetween";
     @Column(name = "date_time", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dateTime;
