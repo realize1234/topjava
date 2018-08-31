@@ -19,12 +19,13 @@ public class JpaMealRepositoryImpl implements MealRepository {
 
     @PersistenceContext
     private EntityManager manager;
+
     @Override
+    @Transactional
     public Meal save(Meal meal, int userId) {
-        if(!meal.isNew() && meal.getUser().getId() != userId) return null;
+        if (!meal.isNew() && get(meal.getId(), userId) == null) return null;
+        meal.setUser(manager.getReference(User.class, userId));
         if(meal.isNew()) {
-            User ref = manager.getReference(User.class, userId);
-            meal.setUser(ref);
             manager.persist(meal);
             return meal;
         }
@@ -32,16 +33,18 @@ public class JpaMealRepositoryImpl implements MealRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(int id, int userId) {
         return manager.createNamedQuery(MEAL_DELETE).setParameter("id", id)
-                .setParameter("userId", id).executeUpdate() != 0;
+                .setParameter("userId", userId).executeUpdate() != 0;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        return manager.createNamedQuery(MEAL_GET, Meal.class)
+        List<Meal> resultList =  manager.createNamedQuery(MEAL_GET, Meal.class)
                 .setParameter("id", id)
-                .setParameter("userId", userId).getSingleResult();
+                .setParameter("userId", userId).getResultList();
+        return resultList.size() == 1 ? resultList.get(0) : null;
     }
 
     @Override

@@ -78,6 +78,7 @@ public class MealServiceTest {
     @Test
     public void testGetAll() throws Exception {
         MATCHER.assertCollectionEquals(MEALS, service.getAll(USER_ID));
+
     }
 
     @Test
