@@ -20,6 +20,9 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
 
   Meal findOne(int id);
 
+  @Query(name = Meal.GET_WITH_USER)
+  Meal getWithUser(@Param("id")int id, @Param("userId") int userId);
+
   @Transactional
   @Override
   Meal save(Meal meal);

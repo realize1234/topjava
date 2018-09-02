@@ -21,4 +21,8 @@ public interface UserService {
     void update(User user);
     
     void evictCache();
+
+    default User getWithMeal(int id){
+        throw new UnsupportedOperationException();
+    }
 }
