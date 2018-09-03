@@ -18,7 +18,7 @@ public class SpringMain {
         // java 7 Automatic resource management
         try (GenericXmlApplicationContext appCtx = new GenericXmlApplicationContext()) {
             appCtx.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
-            appCtx.load("spring/spring-app.xml", "spring/spring-db.xml");
+            appCtx.load("spring/spring-app.xml", "spring/mock.xml");
             appCtx.refresh();
 
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
@@ -33,5 +33,6 @@ public class SpringMain {
                             LocalDate.of(2015, Month.MAY, 31), LocalTime.of(11, 0));
             filteredMealsWithExceeded.forEach(System.out::println);
         }
+
     }
 }
